@@ -47,71 +47,65 @@ namespace lab3
 
     //Metodos
 
+    public void AddCard(Card.Card card, int playerId = -1, string buffType= null)
+    {
+        //Revisar si la carta recibida en el parmetro es Combat oSpecial
+        if (card.GetType().Name == nameof(CombatCard))
+         {
+
+            playerCards[playerId][card.Type].append(card) 
 
 
-    public void AddCombatCard(int playerId, CombatCard combatCard)
-        {
-            if (combatCard.Type == "melee")
-            {
-                meleeCards[playerId].Add(combatCard);
-            }
-            else if (combatCard.Type == "range")
-            {
-                rangeCards[playerId].Add(combatCard);
-            }
-            else
-            {
-                longRangeCards[playerId].Add(combatCard);
-            }
-
-        }
-        public void AddSpecialCard(SpecialCard specialCard, int playerId = -1, string buffType = null)
-        {
-            if (specialCard.Type == "captain")
-            {
-                if (playerId == 0 || playerId == 1)
+             //En caso de que sea de combate , agregarla al diccionario del jugador correspondiente 
+             //, revisando el parmetro playerId
+             if (playerId == 0 || playerId == 1)
+             {
+                 //Se revisa si el diccionario ya tiene alguna cartadel tipo que se quiere agregar, por ejemplo melee.
+                //Constainskey revisa si existe la llave en eldiccionario.En caso de existir retorna true. Porejemlo, si la carta es de tipo "melee",
+                //el mtodo buscar si existe la llave "melee" en eldiccionario.
+                if (playerCards[playerId].ContainsKey(card.Type))
                 {
-                    captainCards[playerId] = specialCard;
-                }
+                    //Si es que existe no es necesario crear la listade cartas, por lo que se agrega directamente
+                playerCards[playerId][card.Type].Add(card); }
                 else
                 {
-                    throw new IndexOutOfRangeException();
+                    //Si no existe , se agrega un nuevo par "Llave":Valor al diccionario.
+                    //Este par tiene como "Llave" el tipo de la carta ,ejemplo "melee".
+                    //Este par tiene como valor la lista de cartas ,con la primera carta que se va a agregar.
+                    playerCards[playerId].Add(card.Type , new List<Card.Card>() { card});
                 }
-            }
-            else if (specialCard.Type == "weather")
-            {
-                weatherCards.Add(specialCard);
-            }
-            else
-            {
-                if (buffType != null)
-                {
-                    if (playerId == 0 || playerId == 1)
-                    {
-                        if (buffType == "melee")
-                        {
-                            specialMeleeCards[playerId] = specialCard;
-                        }
-                        else if (buffType == "range")
-                        {
-                            specialRangeCards[playerId] = specialCard;
-                        }
-                        else
-                        {
-                            specialLongRangeCards[playerId] = specialCard;
-                        }
-                    }
-                    else
-                    {
-                        throw new IndexOutOfRangeException();
-                    }
-                }
-                else
-                {
-                    throw new ArgumentNullException();
-                }
-            }
-        }
+             }
+             else
+             {
+                 throw new IndexOutOfRangeException("No player id given");
+             }
+         }
+        else
+         {
+        //Es capitan? IMPLEMENTAR
+         //Revisar si no se ha agregado el capitan en eldiccionario que representa las cartas del jugador , encaso de existir, no permitir que se agregue la carta.
+
+         //Es buffer? IMPLEMENTAR
+        //Revisar si no se a agregado un buffer en la fila de tipode combate del diccionario que representa las cartas
+        //del jugador, en caso de existir, no permitir que se
+        //agregue la carta.
+        //Para esto , asuma que los valores de buffType puedenser "melee", "range" o "longRange". Luego , asumaque la llave de esta carta ser card.Type +buffType , por ejemplo,
+         //en el caso de que exista un buff en range , la llave
+        //sera Buffrange. Debe revisar que noexista lallave card.Type+buffType.
+
+         //Es weather? Agregue la carta weather a la lista decartas weather.
+         }
+     }
+
+
+
+
+
+
+
+
+
+    
         public void DestroyCombatCards()
         {
             this.meleeCards = new List<CombatCard>[DEFAULT_NUMBER_OF_PLAYERS];
